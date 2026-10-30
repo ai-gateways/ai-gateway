@@ -39,9 +39,9 @@ The term overlaps with three narrower ones. An [LLM gateway](https://github.com/
 Teams adopt an AI gateway when AI usage spreads faster than the controls around it. The usual triggers are several model providers with separate keys, spend that cannot be attributed to a team, agents that call tools and other agents with no audit trail, and a security review that asks for one place to enforce AI policy.
 
 - **Provider sprawl and outages.** Each provider enforces its own limits; [OpenAI's rate limits](https://developers.openai.com/api/docs/guides/rate-limits#how-do-these-rate-limits-work) apply per minute to requests and tokens and return HTTP 429 when exceeded, so every application ends up handling retries and fallbacks on its own.
-- **Unattributed spend.** Token costs accumulate per request, and [unbounded consumption](https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/) is one of the OWASP Top 10 risks for LLM applications.
+- **Unattributed spend.** Token costs accumulate per request, and [unbounded consumption](https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/#:~:text=Unbounded%20Consumption%20refers%20to%20the%20process) is one of the OWASP Top 10 risks for LLM applications.
 - **Credentials everywhere.** Provider keys, MCP server tokens, and agent credentials end up copied into many services and laptops. The MCP security guidance names [token passthrough](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices#token-passthrough) as an anti-pattern for exactly this reason.
-- **No inventory or audit trail.** The OWASP MCP Top 10 lists [lack of audit and telemetry](https://github.com/OWASP/www-project-mcp-top-10/blob/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP08-2025%E2%80%93Lack-of-Audit-and-Telemetry.md) and [shadow MCP servers](https://github.com/OWASP/www-project-mcp-top-10/blob/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP09-2025%E2%80%93Shadow-MCP-Servers.md) among the main risks in MCP deployments.
+- **No inventory or audit trail.** The OWASP MCP Top 10 lists [lack of audit and telemetry](https://github.com/OWASP/www-project-mcp-top-10/blob/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP08-2025%E2%80%93Lack-of-Audit-and-Telemetry.md#description) and [shadow MCP servers](https://github.com/OWASP/www-project-mcp-top-10/blob/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP09-2025%E2%80%93Shadow-MCP-Servers.md#description) among the main risks in MCP deployments.
 
 The triggers differ by hop: see why teams adopt an [LLM gateway](https://github.com/ai-gateways/llm-gateway#why-teams-adopt-an-llm-gateway), an [MCP gateway](https://github.com/ai-gateways/mcp-gateway#why-teams-use-an-mcp-gateway), and an [agent gateway](https://github.com/ai-gateways/agent-gateway#why-agent-to-agent-traffic-needs-a-gateway). For one application calling one provider, a gateway is usually premature.
 
@@ -88,13 +88,13 @@ request
 response
 ```
 
-- **Identity and permissions.** Gateway-issued keys or identity provider tokens, with grants that decide which models, tools, and agents each caller may use. See the [AI governance guide](https://github.com/ai-gateways/ai-governance).
+- **Identity and permissions.** Gateway-issued keys or identity provider tokens, with grants that decide which models, tools, and agents each caller may use. See the [AI governance guide](https://github.com/ai-gateways/ai-governance#identity-and-access).
 - **Budgets and rate limits.** Token and dollar limits per team, application, or key, enforced before a request reaches a provider.
-- **Guardrails.** Checks on prompts, responses, and tool results for [prompt injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/), [sensitive information](https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/), and policy violations. See the [AI guardrails guide](https://github.com/ai-gateways/ai-guardrails).
+- **Guardrails.** Checks on prompts, responses, and tool results for [prompt injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/#:~:text=A%20Prompt%20Injection%20Vulnerability%20occurs%20when%20user%20prompts%20alter), [sensitive information](https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/#:~:text=Sensitive%20information%20can%20affect%20both%20the%20LLM%20and%20its%20application%20context), and policy violations. See the [AI guardrails guide](https://github.com/ai-gateways/ai-guardrails#types-of-ai-guardrails).
 - **Routing and failover.** Weighted, cost-based, or latency-based routing with fallback chains across providers, as in the [LLM gateway features](https://github.com/ai-gateways/llm-gateway#core-features).
 - **Credential brokering.** Upstream keys and OAuth tokens stay in the gateway. MCP servers must validate that each token was [issued for them](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization#token-handling), so the gateway brokers upstream credentials instead of forwarding client tokens, as the [MCP gateway capabilities](https://github.com/ai-gateways/mcp-gateway#core-mcp-gateway-capabilities) describe.
 - **Cost reduction.** Caching for repeated prompts and tool filtering for [large tool sets](https://github.com/ai-gateways/mcp-gateway#reducing-token-cost-from-large-tool-sets).
-- **Observability.** Logs, metrics, and traces for every hop, using OpenTelemetry attributes such as [`gen_ai.usage.input_tokens`](https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/#gen-ai-usage-input-tokens), [`gen_ai.tool.name`](https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/#gen-ai-tool-name), and [`gen_ai.agent.name`](https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/#gen-ai-agent-name). The [LLM observability guide](https://github.com/ai-gateways/llm-observability) covers tracing in depth.
+- **Observability.** Logs, metrics, and traces for every hop, using OpenTelemetry attributes such as [`gen_ai.usage.input_tokens`](https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/#gen-ai-usage-input-tokens), [`gen_ai.tool.name`](https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/#gen-ai-tool-name), and [`gen_ai.agent.name`](https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/#gen-ai-agent-name). The [LLM observability guide](https://github.com/ai-gateways/llm-observability#opentelemetry-for-llm-applications) covers tracing in depth.
 
 ## Where an AI gateway sits
 
@@ -147,11 +147,11 @@ Several open-source projects implement an AI gateway, with different coverage of
 
 | Project | Language, license | Model calls | MCP tool calls | A2A agent calls | Published overhead benchmark | Deployment |
 |---|---|---|---|---|---|---|
-| [Bifrost](https://github.com/maximhq/bifrost) | Go, Apache 2.0 | Yes | Yes | Yes | About 11 µs added per request at 5,000 RPS on one t3.xlarge | Single binary via npx, Docker, Kubernetes, or Go SDK; in-VPC, on-premises, or air-gapped |
-| [LiteLLM](https://github.com/BerriAI/litellm) | Python with a Rust core; MIT, except the `enterprise/` directory | Yes | Yes | Yes | 8 ms P95 latency at 1,000 RPS | Self-hosted proxy (Docker) or Python SDK |
-| [Agent Router](https://github.com/theagentrouter/agent-router) (formerly Envoy AI Gateway) | Go, Apache 2.0 | Yes | Yes | Not published | Not published in the repository | Kubernetes with Envoy Gateway, or the `aigw` CLI |
-| [Kong Gateway](https://github.com/Kong/kong) | Lua, Apache 2.0 | Yes | Yes | Not published | Not published in the repository | Docker or Kubernetes with the Kong Ingress Controller |
-| [ContextForge](https://github.com/IBM/mcp-context-forge) (IBM) | Python, Apache 2.0 | Not published | Yes | Yes | Not published in the repository | PyPI, Docker, or Kubernetes with Helm |
+| [Bifrost](https://github.com/maximhq/bifrost#key-features) | Go, Apache 2.0 | Yes | Yes | Yes | About 11 µs added per request at 5,000 RPS on one t3.xlarge | Single binary via npx, Docker, Kubernetes, or Go SDK; in-VPC, on-premises, or air-gapped |
+| [LiteLLM](https://github.com/BerriAI/litellm#features) | Python with a Rust core; MIT, except the `enterprise/` directory | Yes | Yes | Yes | 8 ms P95 latency at 1,000 RPS | Self-hosted proxy (Docker) or Python SDK |
+| [Agent Router](https://github.com/theagentrouter/agent-router#formerly-envoy-ai-gateway) (formerly Envoy AI Gateway) | Go, Apache 2.0 | Yes | Yes | Not published | Not published in the repository | Kubernetes with Envoy Gateway, or the `aigw` CLI |
+| [Kong Gateway](https://github.com/Kong/kong#getting-started-with-ai-gateway-for-llm-and-mcp) | Lua, Apache 2.0 | Yes | Yes | Not published | Not published in the repository | Docker or Kubernetes with the Kong Ingress Controller |
+| [ContextForge](https://github.com/IBM/mcp-context-forge#overview--goals) (IBM) | Python, Apache 2.0 | Not published | Yes | Yes | Not published in the repository | PyPI, Docker, or Kubernetes with Helm |
 
 Details reflect each repository in October 2026; confirm current capabilities in each project's documentation before choosing.
 
@@ -162,7 +162,7 @@ Coverage differs most on agent-to-agent traffic, which three of the five project
 - [How an LLM gateway works](https://github.com/ai-gateways/llm-gateway#how-an-llm-gateway-works): routing, budgets, and failover for model calls
 - [MCP gateway security](https://github.com/ai-gateways/mcp-gateway#mcp-gateway-security): token handling and tool poisoning on the tool hop
 - [How the A2A protocol works](https://github.com/ai-gateways/agent-gateway#how-the-a2a-protocol-works): Agent Cards, tasks, and bindings on the agent hop
-- [AI governance](https://github.com/ai-gateways/ai-governance): policies, permissions, and audit for AI traffic
-- [LLM observability](https://github.com/ai-gateways/llm-observability): tracing model, tool, and agent calls
-- [AI guardrails](https://github.com/ai-gateways/ai-guardrails): checks on prompts, responses, and tool results
+- [Core AI governance controls](https://github.com/ai-gateways/ai-governance#core-ai-governance-controls): policies, permissions, and audit for AI traffic
+- [Traces, metrics, and logs](https://github.com/ai-gateways/llm-observability#traces-metrics-and-logs): tracing model, tool, and agent calls
+- [Input and output guardrails](https://github.com/ai-gateways/ai-guardrails#input-and-output-guardrails): checks on prompts, responses, and tool results
 - [AI Gateways](https://github.com/ai-gateways): all guides in this organization
