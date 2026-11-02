@@ -16,6 +16,7 @@ This guide explains what an AI gateway does, how it differs from an API gateway,
 - [How to evaluate an AI gateway](#how-to-evaluate-an-ai-gateway)
 - [Open-source AI gateway projects](#open-source-ai-gateway-projects)
 - [Related guides](#related-guides)
+- [Agent skill](#agent-skill)
 
 ## What is an AI gateway?
 
@@ -169,7 +170,7 @@ Coverage differs most on agent-to-agent traffic, which three of the five project
 
 ## Agent skill
 
-[`bifrost-ai-gateway`](skills/bifrost-ai-gateway/SKILL.md) is an Agent Skill that guides a coding agent to set up Bifrost as one gateway for model, MCP tool, and A2A agent traffic.
+[`ai-gateway`](skills/ai-gateway/SKILL.md) is an Agent Skill that guides a coding agent to set up Bifrost as one gateway for model, MCP tool, and A2A agent traffic.
 
 ```bash
 npx skills add ai-gateways/ai-gateway
