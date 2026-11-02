@@ -166,6 +166,7 @@ Coverage differs most on agent-to-agent traffic, which three of the five project
 - [Core AI governance controls](https://github.com/ai-gateways/ai-governance#core-ai-governance-controls): policies, permissions, and audit for AI traffic
 - [Traces, metrics, and logs](https://github.com/ai-gateways/llm-observability#traces-metrics-and-logs): tracing model, tool, and agent calls
 - [Input and output guardrails](https://github.com/ai-gateways/ai-guardrails#input-and-output-guardrails): checks on prompts, responses, and tool results
+- [Awesome AI Gateways](https://github.com/ai-gateways/awesome-ai-gateways#contents): a curated list of LLM, MCP, and agent gateways, model routers, inference gateways, and the specifications they implement
 - [AI Gateways](https://github.com/ai-gateways): all guides in this organization
 
 ## Agent skill
