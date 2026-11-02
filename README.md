@@ -166,3 +166,11 @@ Coverage differs most on agent-to-agent traffic, which three of the five project
 - [Traces, metrics, and logs](https://github.com/ai-gateways/llm-observability#traces-metrics-and-logs): tracing model, tool, and agent calls
 - [Input and output guardrails](https://github.com/ai-gateways/ai-guardrails#input-and-output-guardrails): checks on prompts, responses, and tool results
 - [AI Gateways](https://github.com/ai-gateways): all guides in this organization
+
+## Agent skill
+
+[`bifrost-ai-gateway`](skills/bifrost-ai-gateway/SKILL.md) is an Agent Skill that guides a coding agent to set up Bifrost as one gateway for model, MCP tool, and A2A agent traffic.
+
+```bash
+npx skills add ai-gateways/ai-gateway
+```
